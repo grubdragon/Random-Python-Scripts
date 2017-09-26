@@ -1,17 +1,19 @@
 from bs4 import BeautifulSoup
+import argparse
 import requests
 import urllib2
 import time
 from string import punctuation
 
-def lyricslookup(url,word):
+def lyricslookup(url,word,isVerbose):
         k=url[7:]
         r  = requests.get("http://www.lyrics.com/print.php?id="+k)
         data = r.text
         soup = BeautifulSoup(data, "html.parser")
         try:
                 m=soup.find(id='lyric-body-text').text
-                print "Successfully parsed text for id:"+k
+                if isVerbose:
+                        print "Successfully parsed text for song id:"+k
                 #return count(m,word)
                 c=0
                 x=m.split()
@@ -22,7 +24,8 @@ def lyricslookup(url,word):
         except:
                 try:
                         m=soup.find("pre").contents[0]
-                        print "Successfully parsed contents for id:"+k
+                        if isVerbose:
+                                print "Successfully parsed contents for id:"+k
                         #return count(m,word)
                         c=0
                         x=m.split()
@@ -31,28 +34,33 @@ def lyricslookup(url,word):
                                         c+=1
                         return c
                 except Exception as e:
-                        print "Error for id "+k+': Lyrics not available or not found\n'
+                        if isVerbose:
+                                print "Error for id "+k+': Lyrics not available or not found\n'
                         pass
         return 0
         
-def songslookup(artist,word):
+def songslookup(artist,word,isVerbose):
         url = "http://www.lyrics.com/artist.php?name="+artist.replace(" ","+")
         r  = requests.get(url)
-        print "requested"#
+        if isVerbose:
+                print "requested profile of '"+artist+"'"#
         data = r.text
         soup = BeautifulSoup(data,"html.parser")
-        print "opened"#
+        if isVerbose:
+                print "parsed artist profile"#
         albumsdiv = soup.find('div', class_="tdata-ext")
         c=0
-        print 'Fetching..'
+        if isVerbose:
+                print 'Fetching..'
         for d in albumsdiv:
                 if d.name=='div':
                         lyriclinks = d.findAll("strong")
                         for song in lyriclinks:
-                                c=c+lyricslookup(song.a['href'],word)
+                                c=c+lyricslookup(song.a['href'],word,isVerbose)
         return c
 
 if __name__ == '__main__':
+        isVerbose = False
         array=[]
         arrwordcnt=[]
         fi = open("input.txt", "r")
@@ -62,7 +70,7 @@ if __name__ == '__main__':
                 line=fi.readline()
         word=fi.readline()
         for i in range(0,len(array)):
-                arrwordcnt.append(songslookup(array[i],word))
+                arrwordcnt.append(songslookup(array[i],word,isVerbose))
         pts=zip(arrwordcnt,array)
         sort=sorted(pts,reverse=True)
         fo = open("out.txt", "w")
