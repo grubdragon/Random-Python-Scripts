@@ -1,5 +1,5 @@
 # Random-Python-Scripts
-Some random python scripts I made to kill time/make life easier
+Some random python scripts I made to kill time/make life easier.
 For their individual functionalities, look below
 
 ## lyricfetcher.py
