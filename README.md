@@ -10,4 +10,7 @@ Uses hardcoded (I'll change this someday) Way2SMS credentials and phone number. 
 Made out of frustration during Ind vs Pak, Summer of '17
 
 ## AutoLoginInOut internet.iitb.ac.in
-Autologin and logout scripts for IITB's internal web access login. Uses the requests module instead of mechanize, hence much lighter than your conventional login scripts.
+Autologin and logout scripts for IITB's internal web access login. Uses the requests module instead of mechanize, hence much lighter than your conventional login scripts.  
+
+## subs_easy.py
+Extracts lyrics from lyrics.srt, and displays them according to their timestamp  
