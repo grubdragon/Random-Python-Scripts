@@ -56,6 +56,9 @@ with codecs.open("lyrics.srt", "rU", encoding="utf-8-sig") as srt_file:
         line1 = srt_file.readline()
 
 for i in range(0,len(lyricList)):
-    time.sleep(delayBefore[i])
+	try:
+		time.sleep(delayBefore[i])
+	except e:
+		break
     print(lyricList[i])
     time.sleep(persistenceTime[i])
