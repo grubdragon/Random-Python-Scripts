@@ -1,6 +1,7 @@
 import os
 import time
 import codecs
+import numpy
 
 prevTime=0
 delayBefore=[]
@@ -19,7 +20,7 @@ def time_in_seconds(line):
     hours,minutes,seconds,milliseconds = [int(n) for n in line.split(":")]
     t=(hours*3600)+(minutes*60)+(seconds)+(milliseconds/1000.0)
     return(t)
-    
+
 with codecs.open("lyrics.srt", "rU", encoding="utf-8-sig") as srt_file:
     line1 = srt_file.readline()
     while line1:
@@ -27,28 +28,27 @@ with codecs.open("lyrics.srt", "rU", encoding="utf-8-sig") as srt_file:
             t = srt_file.readline()
             lyric=""
             line2 = srt_file.readline()
-            
             while line2:
                 if line2.strip() == "":
                     break
-                lyric=lyric+line2+"\n"
+                lyric=lyric+line2
                 line2 = srt_file.readline()
             
-            #print lyric
+            print lyric
             
             begin,sep,end=t.strip().split()
             
-            waitbefore = time_in_seconds(begin)-prevTime
-            #print waitbefore
+            t_begin=time_in_seconds(begin)
+            t_end=time_in_seconds(end)
+            waitbefore = t_begin - prevTime
+            persists = t_end-t_begin
             
+            print waitbefore
+            print prevTime
+            print persists
+            
+            prevTime = t_end
             delayBefore.append(waitbefore)
-            
-            prevTime = time_in_seconds(begin)
-            #print prevTime
-            
-            persists = time_in_seconds(end)-time_in_seconds(begin)
-            #print persists
-            
             persistenceTime.append(persists)
             lyricList.append(lyric)
         line1 = srt_file.readline()
@@ -57,4 +57,3 @@ for i in range(0,len(lyricList)):
     time.sleep(delayBefore[i])
     print(lyricList[i])
     time.sleep(persistenceTime[i])
-    #os.system('clear') #command for linux/osx, for windows use os.system('cls')
