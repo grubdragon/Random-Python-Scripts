@@ -43,9 +43,11 @@ with codecs.open("lyrics.srt", "rU", encoding="utf-8-sig") as srt_file:
             waitbefore = t_begin - prevTime
             persists = t_end-t_begin
             
+            '''
             print waitbefore
             print prevTime
             print persists
+            '''
             
             prevTime = t_end
             delayBefore.append(waitbefore)
