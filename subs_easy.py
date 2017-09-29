@@ -32,7 +32,9 @@ with codecs.open("lyrics.srt", "rU", encoding="utf-8-sig") as srt_file:
                 lyric=lyric+line2
                 line2 = srt_file.readline()
             
+            '''
             print lyric
+            '''
             
             begin,sep,end=t.strip().split()
             
