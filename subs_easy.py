@@ -1,7 +1,5 @@
-import os
 import time
 import codecs
-import numpy
 
 prevTime=0
 delayBefore=[]
